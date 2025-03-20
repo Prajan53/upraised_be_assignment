@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "src/app.js",
   "scripts": {
-    "start": "node src/app.js",
+  "prisma:deploy": "npx prisma generate && npx prisma migrate deploy",
+  "start": "npm run prisma:deploy && node app.js",
     "dev": "nodemon src/app.js",
     "postinstall": "prisma generate"
   },
@@ -16,6 +17,7 @@
     "express-rate-limit": "^7.5.0",
     "jsonwebtoken": "^9.0.0",
     "pg": "^8.7.3",
+    "prisma": "^6.5.0",
     "uuid": "^9.0.0",
     "zod": "^3.24.2"
   },
