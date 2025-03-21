@@ -52,7 +52,7 @@ authRouter.post("/signup", async (req, res) => {
     }
     }catch(e){
         res.status(500).json({
-            error: ("Internal Server Error: ", e)
+            error: ("Internal Server Error: ", e.message)
         });
     }
 });
@@ -100,9 +100,8 @@ authRouter.post("/login", authLimiter, async (req,res) => {
         });
     }
 }catch(e){
-    console.log(e);
     res.status(500).json({
-        error: ("Internal Server Error: ", e)
+        error: ("Internal Server Error: ", e.message)
     });
 }
 });
