@@ -16,16 +16,26 @@ const generateSuccessProbability = () => Math.floor(Math.random() * 100) + 1;
 
 const getAllGadgets = async (req, res) => {
   try {
-    const gadgets = await client.gadget.findMany();
+    const { status } = req.query;
+
+    const validStatuses = ["Available", "Deployed", "Destroyed", "Decommissioned"];
+    if (status && !validStatuses.includes(status)) {
+      return res.status(400).json({ error: "Invalid status. Allowed values: Available, Deployed, Destroyed, Decommissioned." });
+    }
+    const gadgets = await client.gadget.findMany({
+      where: status ? { status: status } : {},
+    });
     const gadgetsWithProbability = gadgets.map(gadget => ({
       ...gadget,
       missionSuccessProbability: `${generateSuccessProbability()}%`
     }));
+
     res.status(200).json(gadgetsWithProbability);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 const addGadget = async (req, res) => {
   try {
